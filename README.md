@@ -160,6 +160,49 @@ Run `make` to compile the project. The Makefile uses `pkg-config` to
 find OpenCV: it first tries the package name `opencv` and falls back to
 `opencv4` if needed.
 
+## Building
+
+### Dependencies
+The following libraries are required to compile the project:
+
+- **CUDA** (tested with CUDA 8.0)
+- **pkg-config**
+- **OpenCV** (or OpenCV4)
+- **libpng**
+- **libjpeg** *(optional)*
+- **freeglut**
+- **X11** development headers
+
+### Building dependencies without sudo
+If system wide installations are not possible, each library can be built into
+`$HOME/local`:
+
+```bash
+PREFIX="$HOME/local"
+mkdir -p "$PREFIX"
+# Example for libpng
+curl -L https://download.sourceforge.net/libpng/libpng-1.6.37.tar.gz | tar xz
+cd libpng-1.6.37
+./configure --prefix="$PREFIX" && make -j$(nproc) && make install
+```
+
+After installing the dependencies set the following environment variables so the
+Makefile can locate them:
+
+```bash
+export PKG_CONFIG_PATH="$PREFIX/lib/pkgconfig:$PKG_CONFIG_PATH"
+export LD_LIBRARY_PATH="$PREFIX/lib:$LD_LIBRARY_PATH"
+export CPATH="$PREFIX/include:$CPATH"
+export LIBRARY_PATH="$PREFIX/lib:$LIBRARY_PATH"
+export PATH="$PREFIX/bin:$PATH"
+```
+
+The provided Makefile assumes CUDA 8.0 and uses the flag
+`--gpu-architecture=compute_35`.  Adjust `CUDA_HOME` and `NVCCFLAGS` if your
+system uses a different CUDA version or GPU compute capability.  Once the
+dependencies and environment variables are in place, run `make` to build the
+`bm3d` executable.
+
 ## List of Work by each Student
 **Tianxiong Wang**
 1. build denoising pipeline
