@@ -154,6 +154,12 @@ The serial code to compare: OpenCV
 
 The parallel baseline: [GitHub](https://github.com/DawyD/bm3d-gpu)
 
+### Build
+
+Run `make` to compile the project. The Makefile uses `pkg-config` to
+find OpenCV: it first tries the package name `opencv` and falls back to
+`opencv4` if needed.
+
 ## List of Work by each Student
 **Tianxiong Wang**
 1. build denoising pipeline

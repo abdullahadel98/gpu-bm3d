@@ -4,7 +4,8 @@ LIBS=X11 jpeg png z cufft cudart glut GL
 LDLIBS=$(addprefix -l,$(LIBS))
 CXX=g++ -w -m64 -std=c++11
 CXXFLAGS = -O3 -Wall -Wno-unknown-pragmas
-CVFLAGS=$(shell pkg-config --cflags --libs opencv)
+CVFLAGS := $(shell pkg-config --cflags --libs opencv 2>/dev/null || \
+                     pkg-config --cflags --libs opencv4)
 
 LDFLAGS=-L/usr/local/cuda-8.0/lib64/ -lcudart
 INCLUDE=/usr/local/cuda-8.0/include
