@@ -10,7 +10,8 @@ endif
 LDLIBS=$(addprefix -l,$(LIBS))
 CXX=g++ -w -m64 -std=c++11
 CXXFLAGS = -O3 -Wall -Wno-unknown-pragmas
-CVFLAGS=$(shell pkg-config --cflags --libs opencv)
+CVFLAGS := $(shell pkg-config --cflags --libs opencv 2>/dev/null || \
+                     pkg-config --cflags --libs opencv4)
 
 CUDA_HOME ?= /usr/local/cuda
 ARCH ?= compute_80
