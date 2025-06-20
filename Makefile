@@ -1,6 +1,12 @@
 APPNAME=bm3d
 OBJS=bm3d.o denoise.o
-LIBS=X11 jpeg png z cufft cudart glut GL
+LIBS=X11 png z cufft cudart GL
+ifdef USE_JPEG
+LIBS += jpeg
+endif
+ifdef USE_GLUT
+LIBS += glut
+endif
 LDLIBS=$(addprefix -l,$(LIBS))
 CXX=g++ -w -m64 -std=c++11
 CXXFLAGS = -O3 -Wall -Wno-unknown-pragmas
@@ -14,8 +20,7 @@ NVCC=nvcc
 default: $(APPNAME)
 
 psnr: cal_psnr.cpp
-	$(CXX) $(CXXFLAGS) -lpng -ljpeg -lX11 -I /opt/X11/include -L /opt/X11/lib cal_psnr.cpp -o $@
-
+	$(CXX) $(CXXFLAGS) $(LDLIBS) -I /opt/X11/include -L /opt/X11/lib cal_psnr.cpp -o $@
 demo: bm3d.o demo.o
 	$(NVCC) $(NVCCFLAGS) $(LDFLAGS) $(LDLIBS) $(CVFLAGS) bm3d.o demo.o -o $@
 
