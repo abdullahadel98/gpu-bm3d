@@ -6,9 +6,11 @@ CXX=g++ -w -m64 -std=c++11
 CXXFLAGS = -O3 -Wall -Wno-unknown-pragmas
 CVFLAGS=$(shell pkg-config --cflags --libs opencv)
 
-LDFLAGS=-L/usr/local/cuda-8.0/lib64/ -lcudart
-INCLUDE=/usr/local/cuda-8.0/include
-NVCCFLAGS=-O3 -m64 --gpu-architecture compute_35
+CUDA_HOME ?= /usr/local/cuda
+ARCH ?= compute_80
+LDFLAGS = -L$(CUDA_HOME)/lib64 -lcudart
+INCLUDE = $(CUDA_HOME)/include
+NVCCFLAGS = -O3 -m64 --gpu-architecture $(ARCH)
 NVCC=nvcc
 
 default: $(APPNAME)
